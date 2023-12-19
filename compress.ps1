@@ -1,5 +1,5 @@
 # Imports
-Import-Module -Name ".\lib\compress.psm1" -Verbose -ErrorAction Stop
+Import-Module -Name ".\compress.psm1" -Verbose -ErrorAction Stop
 
 # .NET Framework classes
 Add-Type -AssemblyName PresentationFramework
@@ -8,8 +8,15 @@ Add-Type -AssemblyName System.Windows.Forms
 ### Constants ###
 $AllowedExtensions = @('.mp4', '.mkv')
 
+$scriptName     = [System.IO.Path]::GetFileNameWithoutExtension($MyInvocation.MyCommand.Name)
+$scriptPath     = Split-Path $script:MyInvocation.MyCommand.Path
+$logPath        = "$($scriptPath)\logs\$($scriptName)"
+$logFile        = "$($logPath)\$($scriptName)_$([DateTime]::Now.ToString('yyyyMMdd_HHmmss')).log"
+$logFileError   = "$($logPath)\$($scriptName)_$([DateTime]::Now.ToString('yyyyMMdd_HHmmss'))_error.log"
+if (-not(Test-Path $logPath -pathType Container)) { New-Item -ItemType Directory -Path $logPath | Out-Null }
+
 # XAML 
-$xamlFile = ".\MainWindow.xaml"
+$xamlFile = ".\$($scriptName).xaml"
 [xml]$XAML = Get-Content $xamlFile
 $XAML.Window.RemoveAttribute('x:Class')
 $XAML.Window.RemoveAttribute('mc:Ignorable')
