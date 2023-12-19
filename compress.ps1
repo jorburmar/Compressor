@@ -1,5 +1,5 @@
 # Imports
-Import-Module -Name ".\compress.psm1" -Verbose -ErrorAction Stop
+Import-Module -Name ".\compress.psm1" -Verbose -ErrorAction Stop -Force
 
 # .NET Framework classes
 Add-Type -AssemblyName PresentationFramework
